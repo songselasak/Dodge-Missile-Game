@@ -105,11 +105,13 @@ var up = false;
 var down = false;
 var left = false;
 var right = false;
+context.fillStyle = '#FFFFFF';
+context.fillRect(0,0,800,500);
 var timeBetweenEnemies = 2000;
 
 // ----------- Initiate object of the game ----------
-// Create Ship object that we are controlling
-var ship = makeSquare((canvas.width/2)-15, (canvas.height/2)-15,30,3);
+// Create Avatar object that we are controlling
+var avatar = makeSquare((canvas.width/2)-15, (canvas.height/2)-15,30,3);
 var score = 0;
 
 // ---------- Event Listener ----------
@@ -170,40 +172,40 @@ function draw(){
         enemy.draw();
     })
 
-    //Move our ship
+    //Move our avatar
     if(down) {
-        ship.y += ship.s;
+        avatar.y += avatar.s;
     }
     if(up) {
-        ship.y -= ship.s;
+        avatar.y -= avatar.s;
     }
     if(left) {
-        ship.x -= ship.s;
+        avatar.x -= avatar.s;
     }
     if(right) {
-        ship.x += ship.s;
+        avatar.x += avatar.s;
     }
-    // Prevent ship go out of canvas
-    if (ship.y <0){
-        ship.y = 0;
+    // Prevent avatar go out of canvas
+    if (avatar.y <0){
+        avatar.y = 0;
     }
-    if (ship.y > canvas.height - ship.l) {
-        ship.y = canvas.height - ship.l;
+    if (avatar.y > canvas.height - avatar.l) {
+        avatar.y = canvas.height - avatar.l;
     }
-    if (ship.x <0){
-        ship.x = 0;
+    if (avatar.x <0){
+        avatar.x = 0;
     }
-    if (ship.x > canvas.width - ship.l) {
-        ship.x = canvas.width - ship.l;
+    if (avatar.x > canvas.width - avatar.l) {
+        avatar.x = canvas.width - avatar.l;
     }
 
-    // Draw the ship on screen
+    // Draw the avatar on screen
     context.fillStyle = "#6F7AB8";
-    ship.draw();
+    avatar.draw();
 
     //Check collision with enemies
     enemies.forEach(function(enemy, i) {
-        if(isColliding(ship, enemy)) {
+        if(isColliding(avatar, enemy)) {
             gameOver = true;
             console.log(score);
         }
@@ -215,13 +217,31 @@ function draw(){
         context.fillStyle = '#000000';
         context.font = "15px Arial";
         context.fillText("You survive "+score+" second!", (canvas.width/2)-75, canvas.height/2);
+        context.fillText("Click the button below to start again!", (canvas.width/2)-120, canvas.height/2+25);
+        document.getElementById("restartButton").style.display = "flex";
     }
     else {
         window.requestAnimationFrame(draw);
     }
 }
 
-setInterval(makeEnemy, timeBetweenEnemies);
-setInterval(addscore, 1000);
-setTimeout(makeEnemy, 1000);
-draw();
+function start(){
+    document.getElementById("startButton").style.display = "none";
+    setInterval(makeEnemy, timeBetweenEnemies);
+    setInterval(addscore, 1000);
+    setTimeout(makeEnemy, 1000);
+    draw();
+}
+
+function restart(){
+    draw.gameOver = false;
+    score = 0;
+    context.fillStyle = '#FFFFFF';
+    context.fillRect(0,0,800,500);
+    enemies = [];
+    avatar = makeSquare((canvas.width/2)-15, (canvas.height/2)-15,30,3);
+    document.getElementById("restartButton").style.display = "none";
+    draw();
+}
+
+

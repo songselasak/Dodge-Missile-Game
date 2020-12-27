@@ -16,3 +16,19 @@ h1 {
     color: white;
     text-align: center;
 }
+
+#startButton {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#restartButton {
+    display: none;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+button {
+    font-size: 20px;
+}
